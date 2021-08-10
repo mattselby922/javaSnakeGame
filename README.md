@@ -4,7 +4,8 @@ Project Started: August 10, 2021
 
 Snake game coded in Java, following this tutorial: https://www.youtube.com/watch?v=bI6e6qjJ8JQ
 
-TODO:
+
+Version 1.0 TODO:
 - Update background / Adjust Colors
 - Add 'Restart' Button on 'Game Over' screen
 - Add 'Bad Apples' that remove one score & one body part
