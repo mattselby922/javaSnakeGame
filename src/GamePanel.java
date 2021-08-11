@@ -22,11 +22,12 @@ public class GamePanel extends JPanel implements ActionListener {
     int appleY;
     char direction = 'R'; // Set Initial Direction for Snake
     boolean running = false;
+    boolean gameOver = false;
     Timer timer;
     Random random;
 
-    // GamePanel Constructor
 
+    // GamePanel Constructor
     GamePanel() {
         random = new Random();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -44,6 +45,7 @@ public class GamePanel extends JPanel implements ActionListener {
         timer = new Timer(DELAY, this);
         timer.start();
     }
+
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -160,9 +162,14 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
+
     public void gameOver(Graphics g) {
+         
+        // Pop up 'Game Over' window
+        new GameOverFrame();
+
         // Game Over Text
-        g.setColor(Color.red);
+        g.setColor(Color.magenta);
         g.setFont(new Font("Ink Free", Font.BOLD, 75));
         FontMetrics metrics = getFontMetrics(g.getFont());
         
