@@ -20,6 +20,9 @@ public class GamePanel extends JPanel implements ActionListener {
     int applesEaten = 0;
     int appleX;
     int appleY;
+    int badAppleX;
+    int badAppleY;
+
     char direction = 'R'; // Set Initial Direction for Snake
     boolean running = false;
     boolean gameOver = false;
@@ -31,7 +34,7 @@ public class GamePanel extends JPanel implements ActionListener {
     GamePanel() {
         random = new Random();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        this.setBackground(Color.blue);
+        this.setBackground(new Color(102, 179, 50));
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
         startGame();
@@ -61,21 +64,27 @@ public class GamePanel extends JPanel implements ActionListener {
             }
 
             // Draw Apple
-            g.setColor(Color.red);
+            g.setColor(new Color(231, 55, 55));
             g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
 
+            // Draw Bad Apple
+            g.setColor(Color.blue);
+            g.fillOval(badAppleX, badAppleY, UNIT_SIZE, UNIT_SIZE);
+
+            // Draw Snake
+            // might be fun to have new Color(random) toggleable
             for (int i = 0; i < bodyParts; i++) {
-                if (i == 0) {
-                    g.setColor(Color.green);
+                if (i == 0) {   // Head Color
+                    g.setColor(new Color(251, 96, 127));    
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
-                } else {
-                    g.setColor(new Color(45, 180, 0));
-                    g.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
+                } else {    // Body Color
+                    g.setColor(new Color(255, 145, 164));  
+                    //g.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255)));
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 }
             }
-            g.setColor(Color.red);
-            g.setFont(new Font("Ink Free", Font.BOLD, 75));
+            g.setColor(Color.white);
+            g.setFont(new Font("Monospaced", Font.BOLD, 75));
             FontMetrics metrics = getFontMetrics(g.getFont());
             
             // Draws "Score: [applesEaten]"
@@ -90,7 +99,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
         appleX = random.nextInt((int) (SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE;
         appleY = random.nextInt((int) (SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE;
-
+        badAppleX = random.nextInt((int) (SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE;
+        badAppleY = random.nextInt((int) (SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE;
     }
 
     public void move() {
@@ -122,9 +132,19 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void checkApple() {
+        // If apple eaten
         if((x[0] == appleX) && (y[0] == appleY)){
             bodyParts++;
             applesEaten++;
+            newApple();
+        }
+        // If bad apple eaten
+        if((x[0] == badAppleX) && (y[0] == badAppleY)){
+            bodyParts--;
+            applesEaten--;
+            if(bodyParts == 0){
+                running = false;
+            }
             newApple();
         }
     }
@@ -169,15 +189,15 @@ public class GamePanel extends JPanel implements ActionListener {
         new GameOverFrame();
 
         // Game Over Text
-        g.setColor(Color.magenta);
-        g.setFont(new Font("Ink Free", Font.BOLD, 75));
+        g.setColor(Color.black);
+        g.setFont(new Font("Monospaced", Font.BOLD, 75));
         FontMetrics metrics = getFontMetrics(g.getFont());
         
         // Draws "Game Over" in the CENTER of the screen
         g.drawString("Game Over", (SCREEN_WIDTH - metrics.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 2);
 
-        g.setColor(Color.red);
-        g.setFont(new Font("Ink Free", Font.BOLD, 75));
+        g.setColor(Color.white);
+        g.setFont(new Font("Monospaced", Font.BOLD, 75));
         FontMetrics metrics2 = getFontMetrics(g.getFont());
         
         // Draws "Score: [applesEaten]"

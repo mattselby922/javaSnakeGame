@@ -1,6 +1,7 @@
 import javax.swing.*;
 
 public class GameOverFrame extends JFrame{
+
     GameOverFrame(){
         this.setTitle("Game Over");
         this.add(new GameOverPanel());
@@ -9,5 +10,6 @@ public class GameOverFrame extends JFrame{
         this.setVisible(true);
         this.setLocationRelativeTo(null);
     }
+    
 }
 
